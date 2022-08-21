@@ -36,7 +36,7 @@ type MQPConfig struct {
 var config *MQPConfig
 
 func Init() {
-	file, err := ioutil.ReadFile("config.json")
+	file, err := ioutil.ReadFile("mqp-config.json")
 	if err != nil {
 		log.Panicln("Unable to read config file")
 	}

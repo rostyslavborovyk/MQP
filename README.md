@@ -3,6 +3,11 @@
 Populate queues with messages by a specified in
 config.json way
 
+## Usage
+1. Download MQP binary from the last release
+2. Create mqp-config.json
+3. Run ./MQP
+
 ## Config example
 
 ```json
