@@ -9,6 +9,7 @@ config.json way
 {
   "services": [{
     "type": "rabbitmq",
+    "url": "amqp://guest:guest@localhost:5672/",
     "queues": [
       {
         "name": "non-random-queue",

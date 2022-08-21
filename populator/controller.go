@@ -16,7 +16,7 @@ func (c *Controller) Init() {
 		switch service.Type {
 		case "rabbitmq":
 			provider := &providers.RabbitMQProvider{}
-			provider.Init()
+			provider.Init(service.Url)
 			c.populators = append(c.populators, &Populator{
 				provider:     provider,
 				queuesConfig: service.Queues,

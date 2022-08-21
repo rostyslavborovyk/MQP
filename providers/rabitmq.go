@@ -12,8 +12,8 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func CreateConnection() *amqp.Connection {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func CreateConnection(url string) *amqp.Connection {
+	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	return conn
 }
@@ -29,8 +29,8 @@ type RabbitMQProvider struct {
 	ch   *amqp.Channel
 }
 
-func (p *RabbitMQProvider) Init() {
-	p.conn = CreateConnection()
+func (p *RabbitMQProvider) Init(url string) {
+	p.conn = CreateConnection(url)
 	p.ch = CreateChannel(p.conn)
 }
 

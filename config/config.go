@@ -26,6 +26,7 @@ type Queue struct {
 type Service struct {
 	Type   string  `json:"type"`
 	Queues []Queue `json:"queues"`
+	Url    string  `json:"url"`
 }
 
 type MQPConfig struct {
