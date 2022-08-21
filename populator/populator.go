@@ -16,16 +16,27 @@ func (p *Populator) Close() {
 	p.provider.Close()
 }
 
-func (p Populator) PushMessagesWithDelay(queueConfig config.Queue) {
-	delay := 1000 / queueConfig.Message.Frequency
+func (p Populator) getDelay(queueConfig config.Queue) float64 {
+	if queueConfig.Message.IncludeRandom {
+		return GeneratePoissonInterval(queueConfig.Message.Frequency)
+	} else {
+		return 1000 / queueConfig.Message.Frequency
+	}
+}
+
+func (p Populator) getBody(queueConfig config.Queue) string {
+	if queueConfig.Message.IncludeTimestamp {
+		return fmt.Sprintf("%s %s", queueConfig.Message.Body, time.Now().String())
+	} else {
+		return queueConfig.Message.Body
+	}
+}
+
+func (p Populator) PushMessages(queueConfig config.Queue) {
 	for {
+		delay := p.getDelay(queueConfig)
 		time.Sleep(time.Duration(delay) * time.Millisecond)
-		var body string
-		if queueConfig.Message.IncludeTimestamp {
-			body = fmt.Sprintf("%s %s", queueConfig.Message.Body, time.Now().String())
-		} else {
-			body = queueConfig.Message.Body
-		}
+		body := p.getBody(queueConfig)
 		p.provider.PushMessage(queueConfig.Name, body)
 	}
 }
@@ -33,9 +44,7 @@ func (p Populator) PushMessagesWithDelay(queueConfig config.Queue) {
 func (p Populator) RunQueue(queueConfig config.Queue) {
 	p.provider.CreateQueue(queueConfig.Name)
 	go func() {
-		if !queueConfig.Message.IncludeRandom {
-			p.PushMessagesWithDelay(queueConfig)
-		}
+		p.PushMessages(queueConfig)
 	}()
 }
 

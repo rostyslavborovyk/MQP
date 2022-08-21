@@ -7,7 +7,7 @@ config.json way
 
 ```json
 {
-  "services": [{  
+  "services": [{
     "type": "rabbitmq",
     "queues": [
       {
@@ -17,6 +17,15 @@ config.json way
           "body": "Non random message",
           "includeTimestamp": true,
           "includeRandom": false
+        }
+      },
+      {
+        "name": "random-queue",
+        "message": {
+          "frequency": 0.8,
+          "body": "Random message",
+          "includeTimestamp": true,
+          "includeRandom": true
         }
       }
     ]
@@ -41,4 +50,4 @@ specific service
 
 `services[i].queues[i].message.includeTimestamp` - adds timestamp to a message body if true
 
-`services[i].queues[i].message.includeRandom` - adds random Poisson distribution features, tbd
+`services[i].queues[i].message.includeRandom` - adds random Poisson distribution features

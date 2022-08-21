@@ -10,6 +10,15 @@
           "includeTimestamp": true,
           "includeRandom": false
         }
+      },
+      {
+        "name": "random-queue",
+        "message": {
+          "frequency": 0.8,
+          "body": "Random message",
+          "includeTimestamp": true,
+          "includeRandom": true
+        }
       }
     ]
   }]
