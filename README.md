@@ -25,7 +25,10 @@ config.json way
           "frequency": 0.8,
           "body": "Random message",
           "includeTimestamp": true,
-          "includeRandom": true
+          "includeRandom": true,
+          "randomConfig": {
+            "erlangOrder": 20
+          }
         }
       }
     ]
@@ -51,3 +54,5 @@ specific service
 `services[i].queues[i].message.includeTimestamp` - adds timestamp to a message body if true
 
 `services[i].queues[i].message.includeRandom` - adds random Poisson distribution features
+
+`services[i].queues[i].message.randomConfig.erlangOrder` - [erlang order](https://en.wikipedia.org/wiki/Erlang_distribution)

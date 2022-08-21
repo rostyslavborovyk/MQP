@@ -6,11 +6,16 @@ import (
 	"log"
 )
 
+type RandomConfig struct {
+	ErlangOrder int `json:"erlangOrder"`
+}
+
 type Message struct {
-	Body             string  `json:"body"`
-	IncludeTimestamp bool    `json:"includeTimestamp"`
-	IncludeRandom    bool    `json:"includeRandom"`
-	Frequency        float64 `json:"frequency"`
+	Body             string       `json:"body"`
+	IncludeTimestamp bool         `json:"includeTimestamp"`
+	IncludeRandom    bool         `json:"includeRandom"`
+	Frequency        float64      `json:"frequency"`
+	RandomConfig     RandomConfig `json:"randomConfig"`
 }
 
 type Queue struct {

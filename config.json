@@ -17,7 +17,10 @@
           "frequency": 0.8,
           "body": "Random message",
           "includeTimestamp": true,
-          "includeRandom": true
+          "includeRandom": true,
+          "randomConfig": {
+            "erlangOrder": 20
+          }
         }
       }
     ]

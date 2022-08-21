@@ -18,7 +18,10 @@ func (p *Populator) Close() {
 
 func (p Populator) getDelay(queueConfig config.Queue) float64 {
 	if queueConfig.Message.IncludeRandom {
-		return GeneratePoissonInterval(queueConfig.Message.Frequency)
+		return GeneratePoissonInterval(
+			queueConfig.Message.Frequency,
+			queueConfig.Message.RandomConfig.ErlangOrder,
+		)
 	} else {
 		return 1000 / queueConfig.Message.Frequency
 	}
