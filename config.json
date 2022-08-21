@@ -1,0 +1,16 @@
+{
+  "services": [{
+    "type": "rabbitmq",
+    "queues": [
+      {
+        "name": "non-random-queue",
+        "message": {
+          "frequency": 0.5,
+          "body": "Non random message",
+          "includeTimestamp": true,
+          "includeRandom": false
+        }
+      }
+    ]
+  }]
+}
