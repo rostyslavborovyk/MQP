@@ -2,8 +2,10 @@ package providers
 
 import (
 	"context"
+	"encoding/json"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"log"
+	"reflect"
 )
 
 func failOnError(err error, msg string) {
@@ -52,7 +54,16 @@ func (p *RabbitMQProvider) CreateQueue(name string) bool {
 	return true
 }
 
-func (p RabbitMQProvider) PushMessage(queueName string, message string) bool {
+func (p RabbitMQProvider) PushMessage(queueName string, messageType string, message interface{}) bool {
+	var body []byte
+	if reflect.ValueOf(message).Kind() == reflect.String {
+		body = []byte(message.(string))
+	} else {
+		var err error
+		if body, err = json.Marshal(message); err != nil {
+			failOnError(err, "Failed to marshal message to json")
+		}
+	}
 	if err := p.ch.PublishWithContext(
 		context.Background(),
 		"",
@@ -60,8 +71,8 @@ func (p RabbitMQProvider) PushMessage(queueName string, message string) bool {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(message),
+			ContentType: messageType,
+			Body:        body,
 		}); err != nil {
 		failOnError(err, "Failed to push message")
 	}

@@ -4,6 +4,7 @@ import (
 	"MQP/config"
 	"MQP/providers"
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -27,11 +28,16 @@ func (p Populator) getDelay(queueConfig config.Queue) float64 {
 	}
 }
 
-func (p Populator) getBody(queueConfig config.Queue) string {
-	if queueConfig.Message.IncludeTimestamp {
-		return fmt.Sprintf("%s %s", queueConfig.Message.Body, time.Now().String())
+func getRandomVariation(variations []interface{}) interface{} {
+	return variations[int(rand.Float64()*float64(len(variations)))]
+}
+
+func (p Populator) getBody(queueConfig config.Queue) interface{} {
+	if queueConfig.Message.IncludeTimestamp && queueConfig.Message.BodyVariations.Type == "text/plain" {
+		variation := getRandomVariation(queueConfig.Message.BodyVariations.Variations)
+		return fmt.Sprintf("%s %s", variation, time.Now().String())
 	} else {
-		return queueConfig.Message.Body
+		return getRandomVariation(queueConfig.Message.BodyVariations.Variations)
 	}
 }
 
@@ -40,7 +46,11 @@ func (p Populator) PushMessages(queueConfig config.Queue) {
 		delay := p.getDelay(queueConfig)
 		time.Sleep(time.Duration(delay) * time.Millisecond)
 		body := p.getBody(queueConfig)
-		p.provider.PushMessage(queueConfig.Name, body)
+		p.provider.PushMessage(
+			queueConfig.Name,
+			queueConfig.Message.BodyVariations.Type,
+			body,
+		)
 	}
 }
 

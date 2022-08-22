@@ -7,8 +7,14 @@
         "name": "non-random-queue",
         "message": {
           "frequency": 0.5,
-          "body": "Non random message",
-          "includeTimestamp": true,
+          "bodyVariations": {
+            "type": "text/plain",
+            "variations": [
+              "Non random text 1",
+              "Non random text 2"
+            ]
+          },
+          "includeTimestamp": false,
           "includeRandom": false
         }
       },
@@ -16,8 +22,24 @@
         "name": "random-queue",
         "message": {
           "frequency": 0.8,
-          "body": "Random message",
-          "includeTimestamp": true,
+          "bodyVariations": {
+            "type": "applications/json",
+            "variations": [
+              {
+                "event": "OrderCreated",
+                "orderId": 1
+              },
+              {
+                "event": "OrderCreated",
+                "orderId": 13
+              },
+              {
+                "event": "OrderCreated",
+                "orderId": 14
+              }
+            ]
+          },
+          "includeTimestamp": false,
           "includeRandom": true,
           "randomConfig": {
             "erlangOrder": 20

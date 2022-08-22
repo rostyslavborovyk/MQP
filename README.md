@@ -20,8 +20,14 @@ config.json way
         "name": "non-random-queue",
         "message": {
           "frequency": 0.5,
-          "body": "Non random message",
-          "includeTimestamp": true,
+          "bodyVariations": {
+            "type": "text/plain",
+            "variations": [
+              "Non random text 1",
+              "Non random text 2"
+            ]
+          },
+          "includeTimestamp": false,
           "includeRandom": false
         }
       },
@@ -29,8 +35,24 @@ config.json way
         "name": "random-queue",
         "message": {
           "frequency": 0.8,
-          "body": "Random message",
-          "includeTimestamp": true,
+          "bodyVariations": {
+            "type": "applications/json",
+            "variations": [
+              {
+                "event": "OrderCreated",
+                "orderId": 1
+              },
+              {
+                "event": "OrderCreated",
+                "orderId": 13
+              },
+              {
+                "event": "OrderCreated",
+                "orderId": 14
+              }
+            ]
+          },
+          "includeTimestamp": false,
           "includeRandom": true,
           "randomConfig": {
             "erlangOrder": 20
@@ -46,6 +68,8 @@ create queues
 
 `services[i].type` - type of service, possible values: `rabbitmq`, redis and kafka tbd
 
+`services[i].url` - connection string for a service
+
 `services[i].queues` - list of queues that will be created for a 
 specific service
 
@@ -55,9 +79,13 @@ specific service
 
 `services[i].queues[i].message.frequency` - messages per second
 
-`services[i].queues[i].message.body` - content of a message
+`services[i].queues[i].message.bodyVariations` - variations of a message
 
-`services[i].queues[i].message.includeTimestamp` - adds timestamp to a message body if true
+`services[i].queues[i].message.bodyVariations.type` - type of message, possible values `text/plain`, `application/json`
+
+`services[i].queues[i].message.bodyVariations.variations` - array of values that are randomly chosen for each sent message
+
+`services[i].queues[i].message.includeTimestamp` - adds timestamp to a message body if body variation type equals to `text/plain`
 
 `services[i].queues[i].message.includeRandom` - adds random Poisson distribution features
 

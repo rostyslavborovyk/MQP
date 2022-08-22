@@ -10,12 +10,17 @@ type RandomConfig struct {
 	ErlangOrder int `json:"erlangOrder"`
 }
 
+type BodyVariations struct {
+	Type       string        `json:"type" validate:"regexp=^text/plain$|^application/json$"`
+	Variations []interface{} `json:"variations" validate:"min=1"`
+}
+
 type Message struct {
-	Body             string       `json:"body"`
-	IncludeTimestamp bool         `json:"includeTimestamp"`
-	IncludeRandom    bool         `json:"includeRandom"`
-	Frequency        float64      `json:"frequency"`
-	RandomConfig     RandomConfig `json:"randomConfig"`
+	BodyVariations   BodyVariations `json:"bodyVariations"`
+	IncludeTimestamp bool           `json:"includeTimestamp"`
+	IncludeRandom    bool           `json:"includeRandom"`
+	Frequency        float64        `json:"frequency"`
+	RandomConfig     RandomConfig   `json:"randomConfig"`
 }
 
 type Queue struct {
