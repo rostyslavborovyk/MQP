@@ -2,7 +2,7 @@ package populator
 
 import (
 	config2 "MQP/config"
-	"MQP/providers"
+	"MQP/internal/providers"
 	"log"
 )
 

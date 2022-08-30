@@ -2,7 +2,7 @@ package main
 
 import (
 	"MQP/config"
-	"MQP/populator"
+	"MQP/internal/populator"
 )
 
 func main() {

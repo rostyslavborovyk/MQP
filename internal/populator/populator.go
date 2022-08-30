@@ -2,7 +2,7 @@ package populator
 
 import (
 	"MQP/config"
-	"MQP/providers"
+	"MQP/internal/providers"
 	"fmt"
 	"math/rand"
 	"time"

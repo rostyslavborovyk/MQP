@@ -90,3 +90,11 @@ specific service
 `services[i].queues[i].message.includeRandom` - adds random Poisson distribution features
 
 `services[i].queues[i].message.randomConfig.erlangOrder` - [erlang order](https://en.wikipedia.org/wiki/Erlang_distribution)
+
+## Development status
+
+Providers
+- [X] RabbitMQ
+- [ ] Kafka
+- [ ] Redis
+
