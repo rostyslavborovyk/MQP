@@ -2,8 +2,8 @@ package populator
 
 import (
 	"fmt"
-	"github.com/rostyslavborovyk/config"
-	"github.com/rostyslavborovyk/pkg/providers"
+	"github.com/rostyslavborovyk/MQP/config"
+	"github.com/rostyslavborovyk/MQP/pkg/providers"
 	"math/rand"
 	"time"
 )

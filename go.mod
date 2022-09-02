@@ -1,4 +1,4 @@
-module github.com/rostyslavborovyk
+module github.com/rostyslavborovyk/MQP
 
 go 1.18
 

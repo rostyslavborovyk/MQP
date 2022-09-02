@@ -1,8 +1,8 @@
 package populator
 
 import (
-	config2 "github.com/rostyslavborovyk/config"
-	"github.com/rostyslavborovyk/pkg/providers"
+	config2 "github.com/rostyslavborovyk/MQP/config"
+	"github.com/rostyslavborovyk/MQP/pkg/providers"
 	"log"
 )
 
