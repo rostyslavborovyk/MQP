@@ -78,3 +78,19 @@ func (p RabbitMQProvider) PushMessage(queueName string, messageType string, mess
 	}
 	return true
 }
+
+func (p RabbitMQProvider) GetConsumerChanel(queueName string) (<-chan amqp.Delivery, error) {
+	consumer, err := p.ch.Consume(
+		queueName,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return consumer, nil
+}
