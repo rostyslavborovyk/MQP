@@ -1,8 +1,8 @@
 package main
 
 import (
-	"MQP/config"
-	"MQP/internal/populator"
+	"github.com/rostyslavborovyk/config"
+	"github.com/rostyslavborovyk/internal/populator"
 )
 
 func main() {
