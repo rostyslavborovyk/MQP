@@ -79,7 +79,7 @@ func (p RabbitMQProvider) PushMessage(queueName string, messageType string, mess
 	return true
 }
 
-func (p RabbitMQProvider) GetConsumerChanel(queueName string) (<-chan amqp.Delivery, error) {
+func (p RabbitMQProvider) Consume(queueName string) (amqp.Delivery, error) {
 	consumer, err := p.ch.Consume(
 		queueName,
 		"",
@@ -90,7 +90,7 @@ func (p RabbitMQProvider) GetConsumerChanel(queueName string) (<-chan amqp.Deliv
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return amqp.Delivery{}, err
 	}
-	return consumer, nil
+	return <-consumer, nil
 }
