@@ -13,7 +13,7 @@ type Populator struct {
 	queuesConfig []config.Queue
 }
 
-func (p *Populator) Close() {
+func (p Populator) Close() {
 	p.provider.Close()
 }
 
@@ -41,16 +41,20 @@ func (p Populator) getBody(queueConfig config.Queue) interface{} {
 	}
 }
 
+func (p Populator) pushMessage(queueConfig config.Queue) {
+	delay := p.getDelay(queueConfig)
+	time.Sleep(time.Duration(delay) * time.Millisecond)
+	body := p.getBody(queueConfig)
+	p.provider.PushMessage(
+		queueConfig.Name,
+		queueConfig.Message.BodyVariations.Type,
+		body,
+	)
+}
+
 func (p Populator) PushMessages(queueConfig config.Queue) {
 	for {
-		delay := p.getDelay(queueConfig)
-		time.Sleep(time.Duration(delay) * time.Millisecond)
-		body := p.getBody(queueConfig)
-		p.provider.PushMessage(
-			queueConfig.Name,
-			queueConfig.Message.BodyVariations.Type,
-			body,
-		)
+		p.pushMessage(queueConfig)
 	}
 }
 
