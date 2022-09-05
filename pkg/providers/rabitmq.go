@@ -90,7 +90,7 @@ func (p *RabbitMQProvider) PushMessage(queueName string, messageType string, mes
 	return true
 }
 
-func (p *RabbitMQProvider) Consume(queueName string) (amqp.Delivery, error) {
+func (p RabbitMQProvider) GetConsumerChanel(queueName string) (<-chan amqp.Delivery, error) {
 	consumer, err := p.ch.Consume(
 		queueName,
 		"",
@@ -101,7 +101,7 @@ func (p *RabbitMQProvider) Consume(queueName string) (amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return amqp.Delivery{}, err
+		return nil, err
 	}
-	return <-consumer, nil
+	return consumer, nil
 }
