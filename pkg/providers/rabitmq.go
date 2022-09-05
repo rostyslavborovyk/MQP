@@ -14,13 +14,13 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func CreateConnection(url string) *amqp.Connection {
+func createConnection(url string) *amqp.Connection {
 	conn, err := amqp.Dial(url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	return conn
 }
 
-func CreateChannel(conn *amqp.Connection) *amqp.Channel {
+func createChannel(conn *amqp.Connection) *amqp.Channel {
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	return ch
@@ -31,14 +31,25 @@ type RabbitMQProvider struct {
 	ch   *amqp.Channel
 }
 
-func (p *RabbitMQProvider) Init(url string) {
-	p.conn = CreateConnection(url)
-	p.ch = CreateChannel(p.conn)
+func NewRabbitMQProvider(url string) *RabbitMQProvider {
+	conn := createConnection(url)
+	ch := createChannel(conn)
+	return &RabbitMQProvider{
+		conn: conn,
+		ch:   ch,
+	}
 }
 
-func (p *RabbitMQProvider) Close() {
-	p.ch.Close()
-	p.conn.Close()
+func (p *RabbitMQProvider) Close() error {
+	err := p.ch.Close()
+	if err != nil {
+		return err
+	}
+	err = p.conn.Close()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *RabbitMQProvider) CreateQueue(name string) bool {
@@ -54,7 +65,7 @@ func (p *RabbitMQProvider) CreateQueue(name string) bool {
 	return true
 }
 
-func (p RabbitMQProvider) PushMessage(queueName string, messageType string, message interface{}) bool {
+func (p *RabbitMQProvider) PushMessage(queueName string, messageType string, message interface{}) bool {
 	var body []byte
 	if reflect.ValueOf(message).Kind() == reflect.String {
 		body = []byte(message.(string))
@@ -79,7 +90,7 @@ func (p RabbitMQProvider) PushMessage(queueName string, messageType string, mess
 	return true
 }
 
-func (p RabbitMQProvider) Consume(queueName string) (amqp.Delivery, error) {
+func (p *RabbitMQProvider) Consume(queueName string) (amqp.Delivery, error) {
 	consumer, err := p.ch.Consume(
 		queueName,
 		"",

@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	provider := &providers.RabbitMQProvider{}
-	provider.Init("amqp://guest:guest@localhost:5672/")
+	provider := providers.NewRabbitMQProvider("amqp://guest:guest@localhost:5672/")
 
 	delivery, err := provider.Consume("random-queue")
 	if err != nil {

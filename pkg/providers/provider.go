@@ -1,8 +1,7 @@
 package providers
 
 type Provider interface {
-	Init(url string)
-	Close()
+	Close() error
 	PushMessage(queueName string, messageType string, message interface{}) bool
 	CreateQueue(name string) bool
 }

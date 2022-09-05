@@ -8,8 +8,7 @@ import (
 func main() {
 	endChan := make(chan bool)
 	config.Init()
-	controller := populator.Controller{}
-	controller.Init()
+	controller := populator.NewController()
 	controller.Start()
 	<-endChan
 }
